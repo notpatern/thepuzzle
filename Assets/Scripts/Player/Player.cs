@@ -10,16 +10,22 @@ public class Player : MonoBehaviour
     void Awake()
     {
         m_camera = m_cameraObject.GetComponent<PlayerCamera>();
-    }
+    }   
 
     private void Start()
     {
         m_playerMovement.Start();
+        m_playerMovement.SetPlayerTransform(transform);
     }
 
     public PlayerCamera GetCamera()
     {
         return m_camera;
+    }
+
+    public PlayerMovement GetPlayerMovement()
+    {
+        return m_playerMovement;
     }
 
     private void Update()

@@ -13,5 +13,6 @@ public class GameManager : MonoBehaviour
     void BindInputEvents()
     {
         m_inputManager.BindOnCameraDelta(m_player.GetCamera().UpdateCameraAngles);
+        m_inputManager.BindOnMove(m_player.GetPlayerMovement().OnMoveInputs);
     }   
 }

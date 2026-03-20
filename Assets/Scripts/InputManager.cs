@@ -20,6 +20,7 @@ public class InputManager : MonoBehaviour
 
         inputActions.Player.Look.performed += OnCameraDelta;  
         inputActions.Player.Look.canceled += OnCameraDelta;  
+
         inputActions.Player.Move.performed += OnMove;
         inputActions.Player.Move.canceled += OnMove;
     }
@@ -44,4 +45,3 @@ public class InputManager : MonoBehaviour
         m_onMove.AddListener(action);
     }
 }
-
