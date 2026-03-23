@@ -109,7 +109,7 @@ public class PlayerMovement
         }
         m_isGrounded = true;
 
-        if ((m_walkable.value & (1 << hit.transform.gameObject.layer)) == 0)
+        if ((m_walkable.value & (1 << hit.transform.gameObject.layer)) == 1)
         {
             m_currentWalkableNormal = hit.normal;
             //implement a new raycast for this specific thing
