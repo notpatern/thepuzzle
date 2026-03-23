@@ -5,7 +5,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform m_cameraObject;
     private PlayerCamera m_camera;
 
-    private PlayerMovement m_playerMovement;
+    [SerializeField] private PlayerMovement m_playerMovement;
 
     void Awake()
     {
@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     {
         m_playerMovement.Start();
         m_playerMovement.SetPlayerTransform(transform);
+        m_playerMovement.SetCameraTransform(m_cameraObject);
     }
 
     public PlayerCamera GetCamera()

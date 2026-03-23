@@ -15,6 +15,9 @@ public class PlayerCamera : MonoBehaviour
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         m_cameraForward = m_cameraHolder.forward;
         m_currentPitch = 0f;
         m_lastPlayerRotation = m_player.rotation;
