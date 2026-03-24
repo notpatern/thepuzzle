@@ -68,8 +68,8 @@ public class PlayerMovement
 
         m_velocity = m_horizontalVelocity + m_verticalVelocity;
 
-        Depenetrate();
         Move();
+        Depenetrate();
     }
 
     public void SetPlayerTransform(Transform transform)
@@ -101,19 +101,13 @@ public class PlayerMovement
 
     private void CheckGround()
     {
-        RaycastHit hit;
-        if (!Physics.Raycast(playerTransform.position, -m_currentWalkableNormal, out hit, 1.1f))
+        RaycastHit hit; // might need this later
+        if (!Physics.Raycast(playerTransform.position, -m_currentWalkableNormal, out hit, 1.11f))
         {
             m_isGrounded = false;
             return;
         }
         m_isGrounded = true;
-
-        if ((m_walkable.value & (1 << hit.transform.gameObject.layer)) == 1)
-        {
-            m_currentWalkableNormal = hit.normal;
-            //implement a new raycast for this specific thing
-        }
     }
 
     private void CheckWalkable()
@@ -127,11 +121,6 @@ public class PlayerMovement
 
         foreach (Collider col in overlaps)
         {
-            if ((m_walkable.value & (1 << col.gameObject.layer)) == 0)
-            {
-                continue;
-            }
-
             if (Physics.ComputePenetration(
                 m_walkableCollider,
                 playerTransform.position,
@@ -145,6 +134,15 @@ public class PlayerMovement
                 float alignment = Vector3.Dot(direction, playerTransform.up);
                 if (alignment > bestAlignment)
                 {
+                    if ((m_walkable.value & (1 << col.gameObject.layer)) == 0)
+                    {
+                        if (alignment < 0.8f)
+                        {
+                            continue;
+                        }
+                        normal = Vector3.zero;
+                        break;
+                    }
                     bestAlignment = alignment;
                     normal = direction;
                 }
