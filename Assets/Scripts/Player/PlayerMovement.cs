@@ -102,12 +102,25 @@ public class PlayerMovement
     private void CheckGround()
     {
         RaycastHit hit; // might need this later
-        if (!Physics.Raycast(playerTransform.position, -m_currentWalkableNormal, out hit, 1.11f))
+        if (!Physics.Raycast(playerTransform.position, -m_currentWalkableNormal, out hit, 1.05f))
         {
             m_isGrounded = false;
             return;
         }
         m_isGrounded = true;
+        UselessGameFeelMethodThatIWantedToImplementBecauseItsFun(hit);
+    }
+
+    private void UselessGameFeelMethodThatIWantedToImplementBecauseItsFun(RaycastHit hit)
+    {
+        if ((m_walkable.value & (1 << hit.transform.gameObject.layer)) == 0)
+        {
+            if (Vector3.Dot(hit.normal, playerTransform.up) > 0.98f)
+            {
+                m_currentWalkableNormal = hit.normal;
+                AlignToSurface(hit.normal);
+            }
+        }
     }
 
     private void CheckWalkable()
@@ -159,17 +172,22 @@ public class PlayerMovement
             return;
         }
 
-        AlignToWalkableSurface();
+        AlignToSurface(m_currentWalkableNormal);
     }
 
-    private void AlignToWalkableSurface()
+    private void AlignToSurface(Vector3 surfaceNormal)
     {
-        Quaternion desiredRotation = Quaternion.FromToRotation(playerTransform.up, m_currentWalkableNormal) * playerTransform.rotation;
+        Quaternion desiredRotation = Quaternion.FromToRotation(playerTransform.up, surfaceNormal) * playerTransform.rotation;
         playerTransform.rotation = Quaternion.Slerp(playerTransform.rotation, desiredRotation, Time.deltaTime * m_alignTurnRate);
 
-        if (Vector3.Angle(playerTransform.up, m_currentWalkableNormal) < 0.1f)
+        SnapToNormal(surfaceNormal, 0.1f);
+    }
+
+    private void SnapToNormal(Vector3 normal, float snapThresholdDegree)
+    {
+        if (Vector3.Angle(playerTransform.up, normal) < snapThresholdDegree)
         {
-            playerTransform.rotation = Quaternion.LookRotation(playerTransform.forward, m_currentWalkableNormal);
+            playerTransform.rotation = Quaternion.LookRotation(playerTransform.forward, normal);
         }
     }
 
@@ -256,7 +274,7 @@ public class PlayerMovement
             {
                 continue;
             }
-                if (Physics.ComputePenetration(
+            if (Physics.ComputePenetration(
                     m_capsuleCollider,
                     playerTransform.position,
                     playerTransform.rotation,
@@ -265,10 +283,10 @@ public class PlayerMovement
                     col.transform.rotation,
                     out Vector3 direction,
                     out float distance))
-                {
-                    playerTransform.position += direction * distance;
-                    ClipVelocity(direction);
-                }
+            {
+                playerTransform.position += direction * distance;
+                ClipVelocity(direction);
+            }
         }
     }
 
