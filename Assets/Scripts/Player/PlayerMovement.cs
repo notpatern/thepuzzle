@@ -5,6 +5,7 @@ public class PlayerMovement
 {
     private Transform playerTransform;
     private Transform m_cameraTransform;
+    private Player m_owner; 
 
     [SerializeField] private float m_alignTurnRate;
     [SerializeField] private LayerMask m_walkable;
@@ -43,10 +44,7 @@ public class PlayerMovement
         BuildWishDirection();
         CheckGround();
         CheckWalkable();
-    }
-
-    public void FixedUpdate()
-    {
+        
         DecomposeVelocity();
 
         if (m_isGrounded)
@@ -67,9 +65,24 @@ public class PlayerMovement
         }
 
         m_velocity = m_horizontalVelocity + m_verticalVelocity;
+    }
+
+    private void UpdateCameraData()
+    {
+        m_owner.GetCamera().lastPlayerPosition = m_owner.GetCamera().currentPlayerPosition;
+        m_owner.GetCamera().currentPlayerPosition = playerTransform.position;
+    }
+
+    public void FixedUpdate()
+    {
 
         Move();
         Depenetrate();
+    }
+
+    public void SetOwner(Player player)
+    {
+        m_owner = player;
     }
 
     public void SetPlayerTransform(Transform transform)
@@ -222,19 +235,19 @@ public class PlayerMovement
             m_horizontalVelocity = Vector3.zero;
             return;
         }
-        float drop = speed * m_friction * Time.fixedDeltaTime;
+        float drop = speed * m_friction * Time.deltaTime;
         m_horizontalVelocity *= Mathf.Max(speed - drop, 0f) / speed;
     }
 
     private void ApplyGravity()
     {
-        m_verticalVelocity -= playerTransform.up * m_gravity * Time.fixedDeltaTime;
+        m_verticalVelocity -= playerTransform.up * m_gravity * Time.deltaTime;
     }
 
     private void Accelerate(float speedCap, float accel)
     {
         float currentSpeed = Vector3.Dot(m_horizontalVelocity, m_wishDirection);
-        float addSpeed = Mathf.Clamp(speedCap - currentSpeed, 0f, accel * Time.fixedDeltaTime);
+        float addSpeed = Mathf.Clamp(speedCap - currentSpeed, 0f, accel * Time.deltaTime);
         m_horizontalVelocity += m_wishDirection * addSpeed;
     }
 

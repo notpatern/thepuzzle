@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
         m_playerMovement.Start();
         m_playerMovement.SetPlayerTransform(transform);
         m_playerMovement.SetCameraTransform(m_cameraObject);
+        m_playerMovement.SetOwner(this);
     }
 
     public PlayerCamera GetCamera()

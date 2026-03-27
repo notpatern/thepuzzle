@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
+    [HideInInspector] public Vector3 lastPlayerPosition = Vector3.zero;
+    [HideInInspector] public Vector3 currentPlayerPosition = Vector3.zero;
+    
     [SerializeField] private Transform m_cameraHolder;
     [SerializeField] private Transform m_orientation;
     [SerializeField] private Transform m_player;
@@ -25,6 +28,9 @@ public class PlayerCamera : MonoBehaviour
 
     public void UpdateCameraAngles(Vector2 delta)
     {
+        //float framePosition = (Time.time - Time.fixedTime) / Time.fixedDeltaTime;
+        //m_cameraHolder.position = Vector3.Lerp(lastPlayerPosition, currentPlayerPosition, framePosition);
+        
         if (m_player.rotation != m_lastPlayerRotation)
         {
             RebaseOntoNewUp();
