@@ -15,5 +15,6 @@ public class GameManager : MonoBehaviour
         m_inputManager.BindOnCameraDelta(m_player.GetCamera().UpdateCameraAngles);
         m_inputManager.BindOnMove(m_player.GetPlayerMovement().OnMoveInputs);
         m_inputManager.BindOnJump(m_player.GetPlayerMovement().OnJumpInput);
+        m_inputManager.BindOnAttack(m_player.GetPlayerInteract().OnAttackInput);
     }   
 }

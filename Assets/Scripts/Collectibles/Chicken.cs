@@ -13,7 +13,7 @@ public class Chicken : MonoBehaviour, IGravitable, IInteractable
 
     public void Interact(Vector3 position, Transform parent)
     {
-        this.gameObject.transform.parent = parent;
+        gameObject.transform.parent = parent;
     }
 
     public void ApplyGravity()

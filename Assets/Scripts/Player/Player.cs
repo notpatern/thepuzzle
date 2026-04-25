@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
         m_playerMovement.SetPlayerTransform(transform);
         m_playerMovement.SetCameraTransform(m_cameraObject);
         m_playerMovement.SetOwner(this);
+        m_interact.Start(m_cameraObject);
     }
 
     public PlayerCamera GetCamera()
@@ -31,10 +32,19 @@ public class Player : MonoBehaviour
         return m_playerMovement;
     }
 
+    public Interact GetPlayerInteract()
+    {
+        return m_interact;
+    }
+
+    public void OnDrawGizmos()
+    {
+        m_interact.OnDrawGizmos();
+    }
+
     private void Update()
     {
         m_playerMovement.Update();
-        m_interact.Update();
     }
 
     private void FixedUpdate()
@@ -42,4 +52,3 @@ public class Player : MonoBehaviour
         m_playerMovement.FixedUpdate();
     }
 }
-
