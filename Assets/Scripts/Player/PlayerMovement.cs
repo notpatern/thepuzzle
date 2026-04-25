@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class PlayerMovement
+public class PlayerMovement : IGravitable
 {
     private Transform playerTransform;
     private Transform m_cameraTransform;
@@ -41,6 +41,7 @@ public class PlayerMovement
         {
             m_currentWalkableNormal = playerTransform.up;
         }
+        
         BuildWishDirection();
         CheckGround();
         CheckWalkable();
@@ -239,9 +240,17 @@ public class PlayerMovement
         m_horizontalVelocity *= Mathf.Max(speed - drop, 0f) / speed;
     }
 
-    private void ApplyGravity()
+    public void ApplyGravity()
     {
-        m_verticalVelocity -= playerTransform.up * m_gravity * Time.deltaTime;
+        //m_verticalVelocity -= playerTransform.up * m_gravity * Time.deltaTime;
+        ChangeGravityDirection(-playerTransform.up);
+        m_verticalVelocity +=
+            Gravity.Instance().GetGravityDirection() * (Gravity.Instance().GetGravity() * Time.deltaTime);
+    }
+
+    public void ChangeGravityDirection(Vector3 normal)
+    {
+        Gravity.Instance().SetGravityDirection(normal); 
     }
 
     private void Accelerate(float speedCap, float accel)
