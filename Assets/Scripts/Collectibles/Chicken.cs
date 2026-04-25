@@ -11,9 +11,9 @@ public class Chicken : MonoBehaviour, IGravitable, IInteractable
         m_collider = GetComponent<Collider>(); 
     }
 
-    public void Interact(Vector3 position, Transform parent)
+    public GameObject Interact()
     {
-        gameObject.transform.parent = parent;
+        return transform.gameObject;
     }
 
     public void ApplyGravity()

@@ -29,8 +29,8 @@ public class Interact
                 IInteractable interactable = hit.transform.parent.GetComponentInChildren<IInteractable>();
                 if (interactable != null)
                 {
-                    m_heldObject = hit.transform.transform.parent.gameObject;
-                    interactable.Interact(m_transform.position, m_transform);
+                    m_heldObject = interactable.Interact();
+                    m_heldObject.transform.parent = m_transform; 
                     m_isHolding = true;
                 }
             }
@@ -38,8 +38,18 @@ public class Interact
         else
         {
             m_isHolding = false;
-            m_heldObject.transform.SetParent(m_heldObject.transform);
+            m_heldObject.transform.SetParent(null);
             m_heldObject = null;
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
