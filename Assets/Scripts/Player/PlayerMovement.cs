@@ -17,7 +17,6 @@ public class PlayerMovement : IGravitable
     [SerializeField] private float m_friction = 6f;
     [SerializeField] private float m_airAccel = 100f;
     [SerializeField] private float m_airCap = 0.7f;
-    [SerializeField] private float m_gravity = 20f;
     [SerializeField] private float m_jumpForce = 7f;
 
     private Vector3 m_currentWalkableNormal = Vector3.zero;

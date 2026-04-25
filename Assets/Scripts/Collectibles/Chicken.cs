@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Chicken : MonoBehaviour, IGravitable
+public class Chicken : MonoBehaviour, IGravitable, IInteractable
 {
     [SerializeField] private Collider m_collider;
     private bool m_isInEnclosure = false;
@@ -9,6 +9,11 @@ public class Chicken : MonoBehaviour, IGravitable
     void Start()
     {
         m_collider = GetComponent<Collider>(); 
+    }
+
+    public void Interact(Vector3 position, Transform parent)
+    {
+        this.gameObject.transform.parent = parent;
     }
 
     public void ApplyGravity()

@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
     private PlayerCamera m_camera;
 
     [SerializeField] private PlayerMovement m_playerMovement;
+    [SerializeField] private Interact m_interact;
 
     void Awake()
     {
@@ -33,6 +34,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         m_playerMovement.Update();
+        m_interact.Update();
     }
 
     private void FixedUpdate()
