@@ -140,7 +140,7 @@ public class PlayerMovement : IGravitable
     {
         Vector3[] points = GetCapsuleColliderPoints(m_walkableCollider);
 
-        Collider[] overlaps = OverlapCapsule(points[0], points[1], m_walkableCollider.radius);
+        Collider[] overlaps = OverlapCapsule(points[0], points[1], m_walkableCollider.radius, m_walkable);
 
         Vector3 normal = Vector3.zero;
         float bestAlignment = float.MinValue;
@@ -160,14 +160,13 @@ public class PlayerMovement : IGravitable
                 float alignment = Vector3.Dot(direction, playerTransform.up);
                 if (alignment > bestAlignment)
                 {
-                    if ((m_walkable.value & (1 << col.gameObject.layer)) == 0)
+                    if ((m_walkable.value & (1 << col.transform.gameObject.layer)) == 0)
                     {
                         if (alignment < 0.8f)
                         {
                             continue;
                         }
                         normal = Vector3.zero;
-                        break;
                     }
                     bestAlignment = alignment;
                     normal = direction;
@@ -177,7 +176,11 @@ public class PlayerMovement : IGravitable
 
         if (normal != Vector3.zero)
         {
-            m_currentWalkableNormal = normal;
+            RaycastHit hit;
+            if (Physics.Raycast(playerTransform.position, -playerTransform.up, out hit, 3f, m_walkable))
+            {
+                m_currentWalkableNormal = normal;
+            }
         }
 
         if (playerTransform.up == m_currentWalkableNormal)
@@ -274,13 +277,9 @@ public class PlayerMovement : IGravitable
         m_velocity -= normal * dot;
     }
 
-    private Collider[] OverlapCapsule(Vector3 point1, Vector3 point2, float radius)
+    private Collider[] OverlapCapsule(Vector3 point1, Vector3 point2, float radius, int layerMask = Physics.AllLayers)
     {
-        return Physics.OverlapCapsule(
-            point1,
-            point2,
-            radius
-        );
+        return Physics.OverlapCapsule(point1, point2, radius, layerMask);
     }
 
     private void Depenetrate()

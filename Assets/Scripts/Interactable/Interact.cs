@@ -16,7 +16,7 @@ public class Interact
 
     public void OnDrawGizmos()
     {
-        Gizmos.DrawLine(m_transform.position, m_transform.position + m_transform.forward * m_interactDistance);
+        //Gizmos.DrawLine(m_transform.position, m_transform.position + m_transform.forward * m_interactDistance);
     }
 
     public void OnAttackInput()
